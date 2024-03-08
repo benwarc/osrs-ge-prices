@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: @project.name@
+
+ge-prices:
+  base-url: prices.runescape.wiki/api/v1/osrs
+  item-details-url: /mapping
+
+largest-response-size-kb: 800
