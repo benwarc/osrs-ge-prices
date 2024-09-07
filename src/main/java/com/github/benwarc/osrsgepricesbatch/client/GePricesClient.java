@@ -19,12 +19,14 @@ public class GePricesClient {
     private final WebClient gePricesWebClient;
     private final GePricesProperties gePricesProperties;
 
+    private static final String HTTPS = "https";
+
     public Set<ItemDetails> getItemDetails() {
         try {
             return gePricesWebClient
                     .get()
                     .uri(uriBuilder -> uriBuilder
-                            .scheme("https")
+                            .scheme(HTTPS)
                             .host(gePricesProperties.baseUrl())
                             .path(gePricesProperties.itemDetailsUrl())
                             .build()
@@ -36,6 +38,26 @@ public class GePricesClient {
         } catch (Exception e) {
             log.error("{} thrown while attempting to get item details", e.getCause().toString());
             return Collections.emptySet();
+        }
+    }
+
+    public String getFiveMinutePrices() {
+        try {
+            return gePricesWebClient
+                    .get()
+                    .uri(uriBuilder -> uriBuilder
+                            .scheme(HTTPS)
+                            .host(gePricesProperties.baseUrl())
+                            .path(gePricesProperties.fiveMinutePricesUrl())
+                            .build()
+                    )
+                    .retrieve()
+                    .bodyToMono(new ParameterizedTypeReference<String>() {
+                    })
+                    .block();
+        } catch (Exception e) {
+            log.error("{} thrown while attempting to get five minute prices", e.getCause().toString());
+            return "";
         }
     }
 }

@@ -5,5 +5,6 @@ spring:
 ge-prices:
   base-url: prices.runescape.wiki/api/v1/osrs
   item-details-url: /mapping
+  five-minute-prices-url: /5m
 
 largest-response-size-kb: 800
