@@ -1,10 +1,14 @@
 spring:
   application:
     name: @project.name@
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 ge-prices:
   base-url: prices.runescape.wiki/api/v1/osrs
-  item-details-url: /mapping
+  item-mapping-url: /mapping
   five-minute-prices-url: /5m
 
 largest-response-size-kb: 800

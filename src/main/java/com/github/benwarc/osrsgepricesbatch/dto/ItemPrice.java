@@ -1,16 +1,11 @@
 package com.github.benwarc.osrsgepricesbatch.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
 
-@Data
-@NoArgsConstructor
-public class ItemPrice {
-
-    private int id;
-    private int avgHighPrice;
-    private int highPriceVolume;
-    private int avgLowPrice;
-    private int lowPriceVolume;
-    private int timestamp;
+public record ItemPrice(int id,
+                        int avgHighPrice,
+                        int highPriceVolume,
+                        int avgLowPrice,
+                        int lowPriceVolume,
+                        int timestamp) implements Serializable {
 }
