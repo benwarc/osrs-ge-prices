@@ -1,6 +1,7 @@
 package com.github.benwarc.osrsgepricesbatch.configuration;
 
 import com.github.benwarc.osrsgepricesbatch.dto.Item;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -27,8 +28,10 @@ public class RedisConfiguration {
     }
 
     @Bean
-    public LettuceConnectionFactory connectionFactory() {
-        return new LettuceConnectionFactory();
+    public LettuceConnectionFactory connectionFactory(@Value("${spring.data.redis.host}") String host,
+                                                      @Value("${spring.data.redis.port}") int port) {
+
+        return new LettuceConnectionFactory(host, port);
     }
 
     @Bean

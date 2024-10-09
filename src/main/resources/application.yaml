@@ -3,7 +3,7 @@ spring:
     name: @project.name@
   data:
     redis:
-      host: localhost
+      host: redis # Refers to the docker-compose service of the same name
       port: 6379
 
 ge-prices:
