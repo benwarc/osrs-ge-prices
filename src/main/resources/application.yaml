@@ -2,6 +2,9 @@ spring:
   application:
     name: @project.name@
   data:
+    mongodb:
+      host: mongodb # Refers to the docker-compose service of the same name
+      port: 27017
     redis:
       host: redis # Refers to the docker-compose service of the same name
       port: 6379
