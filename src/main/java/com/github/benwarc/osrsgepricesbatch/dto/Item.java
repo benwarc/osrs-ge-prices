@@ -17,5 +17,5 @@ public class Item implements Serializable {
     private final int highalch;
     private final boolean members;
 
-    private final List<ItemPrice> prices = new ArrayList<>();
+    private final List<Price> prices = new ArrayList<>();
 }

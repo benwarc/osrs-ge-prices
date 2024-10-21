@@ -1,25 +1,23 @@
 package com.github.benwarc.osrsgepricesbatch.configuration;
 
-import com.github.benwarc.osrsgepricesbatch.dto.Item;
-import com.github.benwarc.osrsgepricesbatch.service.GePricesService;
+import com.github.benwarc.osrsgepricesbatch.dto.Price;
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.item.adapter.ItemWriterAdapter;
+import org.springframework.batch.item.data.MongoItemWriter;
+import org.springframework.batch.item.data.builder.MongoItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
 @RequiredArgsConstructor
 public class WriterConfiguration {
 
-    private final GePricesService gePricesService;
+    private final MongoTemplate mongoTemplate;
 
     @Bean
-    public ItemWriterAdapter<List<Item>> writer() {
-        var writer = new ItemWriterAdapter<List<Item>>();
-        writer.setTargetObject(gePricesService);
-        writer.setTargetMethod("writeItemDetails");
-        return writer;
+    public MongoItemWriter<Price> priceWriter() {
+        return new MongoItemWriterBuilder<Price>()
+                .template(mongoTemplate)
+                .build();
     }
 }

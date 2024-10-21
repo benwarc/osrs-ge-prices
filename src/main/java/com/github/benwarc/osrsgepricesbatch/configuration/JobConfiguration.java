@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Configuration;
 public class JobConfiguration {
 
     @Bean
-    public Job job(JobRepository jobRepository, Step step) {
+    public Job job(JobRepository jobRepository, Step readAndWritePrices) {
         return new JobBuilder("job", jobRepository)
-                .start(step)
+                .start(readAndWritePrices)
                 .build();
     }
 }

@@ -5,6 +5,7 @@ spring:
     mongodb:
       host: mongodb # Refers to the docker-compose service of the same name
       port: 27017
+      database: prices
     redis:
       host: redis # Refers to the docker-compose service of the same name
       port: 6379
@@ -15,3 +16,7 @@ ge-prices:
   five-minute-prices-url: /5m
 
 largest-response-size-kb: 800
+
+logging:
+  level:
+    com.github.benwarc.osrsgepricesbatch: DEBUG

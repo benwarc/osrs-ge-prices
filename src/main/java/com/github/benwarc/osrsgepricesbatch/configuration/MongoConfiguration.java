@@ -23,8 +23,10 @@ public class MongoConfiguration {
     }
 
     @Bean
-    public MongoDatabaseFactory mongoDbFactory(MongoClient mongoClient) {
-        return new SimpleMongoClientDatabaseFactory(mongoClient, "database");
+    public MongoDatabaseFactory mongoDbFactory(MongoClient mongoClient,
+                                               @Value("${spring.data.mongodb.database}") String database) {
+
+        return new SimpleMongoClientDatabaseFactory(mongoClient, database);
     }
 
     @Bean

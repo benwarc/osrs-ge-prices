@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benwarc.osrsgepricesbatch.client.GePricesClient;
 import com.github.benwarc.osrsgepricesbatch.dto.Item;
-import com.github.benwarc.osrsgepricesbatch.dto.ItemPrice;
+import com.github.benwarc.osrsgepricesbatch.dto.Price;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -58,13 +58,13 @@ public class GePricesService {
                 }
             }
 
-            Map<Integer, ItemPrice> itemPrices = getFiveMinutePrices()
+            Map<Integer, Price> prices = getFiveMinutePrices()
                     .stream()
-                    .collect(Collectors.toMap(ItemPrice::id, Function.identity()));
-            itemPrices.forEach((itemId, itemPrice) -> {
+                    .collect(Collectors.toMap(Price::itemId, Function.identity()));
+            prices.forEach((itemId, price) -> {
                 var item = itemCache.get(itemId, Item.class);
                 if (item != null) {
-                    item.getPrices().add(itemPrice);
+                    item.getPrices().add(price);
                     itemCache.put(itemId, item);
                 }
             });
@@ -87,7 +87,7 @@ public class GePricesService {
         itemDetails.forEach(itemDetail -> log.info("{}", itemDetail));
     }
 
-    public List<ItemPrice> getFiveMinutePrices() {
+    public List<Price> getFiveMinutePrices() {
         var jsonClientResponse = gePricesClient.getFiveMinutePrices().orElse(null);
         JsonNode fiveMinutePrices;
         try {
@@ -99,9 +99,9 @@ public class GePricesService {
         var itemIdAndPriceMap = fiveMinutePrices.get(DATA);
         var timestamp = fiveMinutePrices.get(TIMESTAMP).asInt();
 
-        var itemPrices = new ArrayList<ItemPrice>();
+        var prices = new ArrayList<Price>();
         itemIdAndPriceMap.fields().forEachRemaining(mapEntry -> {
-            var itemPrice = new ItemPrice(
+            var price = new Price(
                     Integer.parseInt(mapEntry.getKey()),
                     mapEntry.getValue().get(AVG_HIGH_PRICE).asInt(),
                     mapEntry.getValue().get(HIGH_PRICE_VOLUME).asInt(),
@@ -109,8 +109,8 @@ public class GePricesService {
                     mapEntry.getValue().get(LOW_PRICE_VOLUME).asInt(),
                     timestamp
             );
-            itemPrices.add(itemPrice);
+            prices.add(price);
         });
-        return itemPrices;
+        return prices;
     }
 }
