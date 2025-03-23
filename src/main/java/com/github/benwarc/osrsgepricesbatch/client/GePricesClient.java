@@ -46,7 +46,7 @@ public class GePricesClient {
             return Optional.ofNullable(gePricesWebClient
                     .get()
                     .uri(uriBuilder -> uriBuilder
-                            .scheme(HTTPS)
+                            .scheme(gePricesProperties.scheme())
                             .host(gePricesProperties.baseUrl())
                             .path(gePricesProperties.fiveMinutePricesUrl())
                             .build()

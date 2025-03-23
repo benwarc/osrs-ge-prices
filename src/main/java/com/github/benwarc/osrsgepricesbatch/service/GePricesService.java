@@ -88,16 +88,17 @@ public class GePricesService {
     }
 
     public List<Price> getFiveMinutePrices() {
-        var jsonClientResponse = gePricesClient.getFiveMinutePrices().orElse(null);
+        String jsonClientResponse = gePricesClient.getFiveMinutePrices().orElse(null);
+
         JsonNode fiveMinutePrices;
         try {
-            fiveMinutePrices = objectMapper.readTree(jsonClientResponse);
-        } catch (JsonProcessingException e) {
-            log.error("{} thrown while deserializing five minute prices from JSON string", e.getCause().toString());
+            fiveMinutePrices = Objects.requireNonNull(objectMapper.readTree(jsonClientResponse));
+        } catch (IllegalArgumentException | JsonProcessingException | NullPointerException e) {
+            log.error("Exception thrown while deserializing five minute prices from JSON string", e);
             return Collections.emptyList();
         }
-        var itemIdAndPriceMap = fiveMinutePrices.get(DATA);
-        var timestamp = fiveMinutePrices.get(TIMESTAMP).asInt();
+        JsonNode itemIdAndPriceMap = fiveMinutePrices.get(DATA);
+        int timestamp = fiveMinutePrices.get(TIMESTAMP).asInt();
 
         var prices = new ArrayList<Price>();
         itemIdAndPriceMap.fields().forEachRemaining(mapEntry -> {

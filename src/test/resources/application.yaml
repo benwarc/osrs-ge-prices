@@ -1,20 +1,20 @@
 spring:
   application:
-    name: @project.name@
+    name: osrs-ge-prices-batch
   data:
     mongodb:
-      host: mongodb # Refers to the docker-compose service of the same name
-      port: 27017
+      host: # Defined in the base Spring Batch test class
+      port: # Defined in the base Spring Batch test class
       database: prices
     redis:
       host: redis # Refers to the docker-compose service of the same name
       port: 6379
 
 ge-prices:
-  scheme: https
-  base-url: prices.runescape.wiki/api/v1/osrs
+  scheme: http
+  base-url: # Defined in the base Spring Batch test class
   item-mapping-url: /mapping
-  five-minute-prices-url: /5m
+  five-minute-prices-url: # Defined in the base Spring Batch test class
 
 largest-response-size-kb: 800
 

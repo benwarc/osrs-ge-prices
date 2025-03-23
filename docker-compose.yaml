@@ -5,6 +5,7 @@ services:
       - "8080:8080"
     networks:
       - local
+    container_name: batch
     depends_on:
       mongodb:
         condition: service_started
@@ -16,12 +17,14 @@ services:
       - "27017:27017"
     networks:
       - local
+    container_name: mongodb
   redis:
     image: "redis:alpine"
     ports:
       - "6379:6379"
     networks:
       - local
+    container_name: redis
 
 networks:
   local:
