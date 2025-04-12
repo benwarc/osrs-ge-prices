@@ -114,4 +114,13 @@ public class GePricesService {
         });
         return prices;
     }
+
+    public byte[] getFiveMinutePricesAsByteArray() {
+        try {
+            return objectMapper.writeValueAsBytes(this.getFiveMinutePrices());
+        } catch (JsonProcessingException e) {
+            log.error("Exception thrown while serializing five minute prices into byte array", e);
+            return new byte[0];
+        }
+    }
 }
