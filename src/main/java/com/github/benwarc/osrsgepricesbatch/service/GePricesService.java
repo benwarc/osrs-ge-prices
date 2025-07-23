@@ -87,6 +87,10 @@ public class GePricesService {
         itemDetails.forEach(itemDetail -> log.info("{}", itemDetail));
     }
 
+    public List<Item> getItemMapping() {
+        return gePricesClient.getItemMapping().orElse(Collections.emptyList());
+    }
+
     public List<Price> getFiveMinutePrices() {
         String jsonClientResponse = gePricesClient.getFiveMinutePrices().orElse(null);
 
@@ -113,14 +117,5 @@ public class GePricesService {
             prices.add(price);
         });
         return prices;
-    }
-
-    public byte[] getFiveMinutePricesAsByteArray() {
-        try {
-            return objectMapper.writeValueAsBytes(this.getFiveMinutePrices());
-        } catch (JsonProcessingException e) {
-            log.error("Exception thrown while serializing five minute prices into byte array", e);
-            return new byte[0];
-        }
     }
 }

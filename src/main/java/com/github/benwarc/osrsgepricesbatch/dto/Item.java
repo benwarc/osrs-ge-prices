@@ -9,13 +9,13 @@ import java.util.List;
 @Data
 public class Item implements Serializable {
 
-    private final int id;
-    private final String name;
-    private final int value;
-    private final int limit;
-    private final int lowalch;
-    private final int highalch;
-    private final boolean members;
+    private int id;
+    private String name;
+    private int value;
+    private int limit;
+    private int lowalch;
+    private int highalch;
+    private boolean members;
 
-    private final List<Price> prices = new ArrayList<>();
+    private List<Price> prices = new ArrayList<>();
 }

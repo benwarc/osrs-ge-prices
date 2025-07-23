@@ -1,6 +1,6 @@
 package com.github.benwarc.osrsgepricesbatch;
 
-import com.github.benwarc.osrsgepricesbatch.model.PriceModel;
+import com.github.benwarc.osrsgepricesbatch.model.ItemModel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,24 +11,24 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-class ReadAndWritePricesTest extends BaseSpringBatchTest {
+class ReadAndWriteItemsTest extends BaseSpringBatchTest {
 
     @Autowired
-    private Job readAndWritePricesJob;
+    private Job readAndWriteItemsJob;
     @Autowired
     private MongoTemplate mongoTemplate;
 
     @BeforeEach
     void beforeEach() {
-        jobLauncherTestUtils.setJob(readAndWritePricesJob);
+        jobLauncherTestUtils.setJob(readAndWriteItemsJob);
     }
 
     @Test
-    void readAndWritePricesTest() throws Exception {
+    void readAndWriteItemsTest() throws Exception {
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
         Assertions.assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-        Assertions.assertEquals(194, mongoTemplate.findOne(Query.query(Criteria.where("itemId").is(2)), PriceModel.class).getAvgHighPrice());
-        Assertions.assertEquals(950, mongoTemplate.findOne(Query.query(Criteria.where("itemId").is(30)), PriceModel.class).getAvgHighPrice());
+        Assertions.assertEquals("3rd age amulet", mongoTemplate.findOne(Query.query(Criteria.where("id").is(10344)), ItemModel.class).getName());
+        Assertions.assertEquals("3rd age axe", mongoTemplate.findOne(Query.query(Criteria.where("id").is(20011)), ItemModel.class).getName());
     }
 }

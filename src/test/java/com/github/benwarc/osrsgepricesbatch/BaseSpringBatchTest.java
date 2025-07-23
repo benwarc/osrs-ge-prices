@@ -6,8 +6,6 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.batch.core.Job;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +23,12 @@ import java.nio.file.Paths;
 public class BaseSpringBatchTest {
 
     private static final String FIVE_MINUTE_PRICES_URL = "/5m";
+    private static final String ITEM_MAPPING_URL = "/mapping";
 
-    private static final MockWebServer mockWebServer = new MockWebServer();
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
 
-    @Autowired
-    protected Job job;
+    private static MockWebServer mockWebServer;
+
     @Autowired
     protected JobLauncherTestUtils jobLauncherTestUtils;
 
@@ -38,20 +36,22 @@ public class BaseSpringBatchTest {
     static void beforeAll() throws IOException {
         mongoDBContainer.start();
 
-        mockWebServer.setDispatcher(getPricesClientDispatcher());
-        mockWebServer.start();
+        if (mockWebServer == null) {
+            mockWebServer = new MockWebServer();
+            mockWebServer.setDispatcher(getPricesClientDispatcher());
+            mockWebServer.start();
+        }
 
         System.setProperty("ge-prices.five-minute-prices-url", FIVE_MINUTE_PRICES_URL);
+        System.setProperty("ge-prices.item-mapping-url", ITEM_MAPPING_URL);
     }
 
     @AfterAll
     static void afterAll() throws IOException {
-        mockWebServer.shutdown();
-    }
-
-    @BeforeEach
-    void beforeEach() {
-        jobLauncherTestUtils.setJob(job);
+        if (mockWebServer != null) {
+            mockWebServer.shutdown();
+            mockWebServer = null;
+        }
     }
 
     @DynamicPropertySource
@@ -70,13 +70,18 @@ public class BaseSpringBatchTest {
             @Override
             public MockResponse dispatch(RecordedRequest request) {
                 try {
-                    if (FIVE_MINUTE_PRICES_URL.equals(request.getPath())) {
-                        return new MockResponse()
+                    return switch (request.getPath()) {
+                        case FIVE_MINUTE_PRICES_URL -> new MockResponse()
                                 .setResponseCode(200)
+                                .setHeader("Content-Type", "application/json")
                                 .setBody(fileToString("src/test/resources/mock-response/five-minute-prices.json"));
-                    } else {
-                        return new MockResponse().setResponseCode(404);
-                    }
+                        case ITEM_MAPPING_URL -> new MockResponse()
+                                .setResponseCode(200)
+                                .setHeader("Content-Type", "application/json")
+                                .setBody(fileToString("src/test/resources/mock-response/item-mapping.json"));
+                        default -> new MockResponse()
+                                .setResponseCode(404);
+                    };
                 } catch (IOException e) {
                     return new MockResponse().setResponseCode(500);
                 }

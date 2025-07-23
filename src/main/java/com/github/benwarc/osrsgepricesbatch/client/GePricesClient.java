@@ -19,14 +19,12 @@ public class GePricesClient {
     private final WebClient gePricesWebClient;
     private final GePricesProperties gePricesProperties;
 
-    private static final String HTTPS = "https";
-
     public Optional<List<Item>> getItemMapping() {
         try {
             return Optional.ofNullable(gePricesWebClient
                     .get()
                     .uri(uriBuilder -> uriBuilder
-                            .scheme(HTTPS)
+                            .scheme(gePricesProperties.scheme())
                             .host(gePricesProperties.baseUrl())
                             .path(gePricesProperties.itemMappingUrl())
                             .build()
@@ -36,7 +34,7 @@ public class GePricesClient {
                     })
                     .block());
         } catch (Exception e) {
-            log.error("{} thrown while getting item mappings", e.getCause().toString());
+            log.error("Exception thrown while getting item mappings", e);
             return Optional.empty();
         }
     }
@@ -56,7 +54,7 @@ public class GePricesClient {
                     })
                     .block());
         } catch (Exception e) {
-            log.error("{} thrown while getting five minute prices", e.getCause().toString());
+            log.error("Exception thrown while getting five minute prices", e);
             return Optional.empty();
         }
     }

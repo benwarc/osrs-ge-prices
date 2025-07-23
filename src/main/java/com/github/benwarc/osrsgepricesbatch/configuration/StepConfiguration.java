@@ -1,6 +1,9 @@
 package com.github.benwarc.osrsgepricesbatch.configuration;
 
+import com.github.benwarc.osrsgepricesbatch.dto.Item;
 import com.github.benwarc.osrsgepricesbatch.dto.Price;
+import com.github.benwarc.osrsgepricesbatch.model.ItemModel;
+import com.github.benwarc.osrsgepricesbatch.model.PriceModel;
 import org.springframework.batch.core.ItemReadListener;
 import org.springframework.batch.core.ItemWriteListener;
 import org.springframework.batch.core.Step;
@@ -16,15 +19,32 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 public class StepConfiguration {
 
     @Bean
-    public Step readAndWritePrices(JobRepository jobRepository,
-                                   DataSourceTransactionManager transactionManager,
-                                   ItemReader<Price> priceReader,
-                                   ItemWriter<Price> priceWriter,
-                                   ItemReadListener<Price> priceReadListener,
-                                   ItemWriteListener<Price> priceWriteListener) {
+    public Step readAndWriteItemsStep(JobRepository jobRepository,
+                                      DataSourceTransactionManager transactionManager,
+                                      ItemReader<Item> itemReader,
+                                      ItemWriter<ItemModel> itemWriter,
+                                      ItemReadListener<Item> osrsItemReadListener,
+                                      ItemWriteListener<ItemModel> osrsItemWriteListener) {
 
-        return new StepBuilder("readAndWritePrices", jobRepository)
-                .<Price, Price> chunk(200, transactionManager)
+        return new StepBuilder("readAndWriteItemsStep", jobRepository)
+                .<Item, ItemModel> chunk(200, transactionManager)
+                .reader(itemReader)
+                .writer(itemWriter)
+                .listener(osrsItemReadListener)
+                .listener(osrsItemWriteListener)
+                .build();
+    }
+
+    @Bean
+    public Step readAndWritePricesStep(JobRepository jobRepository,
+                                       DataSourceTransactionManager transactionManager,
+                                       ItemReader<Price> priceReader,
+                                       ItemWriter<PriceModel> priceWriter,
+                                       ItemReadListener<Price> priceReadListener,
+                                       ItemWriteListener<PriceModel> priceWriteListener) {
+
+        return new StepBuilder("readAndWritePricesStep", jobRepository)
+                .<Price, PriceModel> chunk(200, transactionManager)
                 .reader(priceReader)
                 .writer(priceWriter)
                 .listener(priceReadListener)

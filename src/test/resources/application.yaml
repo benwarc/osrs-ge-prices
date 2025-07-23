@@ -1,11 +1,14 @@
 spring:
   application:
     name: osrs-ge-prices-batch
+  batch:
+    job:
+      enabled: false
   data:
     mongodb:
       host: # Defined in the base Spring Batch test class
       port: # Defined in the base Spring Batch test class
-      database: prices
+      database: osrs-ge
     redis:
       host: redis # Refers to the docker-compose service of the same name
       port: 6379
@@ -13,7 +16,7 @@ spring:
 ge-prices:
   scheme: http
   base-url: # Defined in the base Spring Batch test class
-  item-mapping-url: /mapping
+  item-mapping-url: # Defined in the base Spring Batch test class
   five-minute-prices-url: # Defined in the base Spring Batch test class
 
 largest-response-size-kb: 800
