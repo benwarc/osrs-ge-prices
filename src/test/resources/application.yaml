@@ -9,9 +9,6 @@ spring:
       host: # Defined in the base Spring Batch test class
       port: # Defined in the base Spring Batch test class
       database: osrs-ge
-    redis:
-      host: redis # Refers to the docker-compose service of the same name
-      port: 6379
 
 ge-prices:
   scheme: http

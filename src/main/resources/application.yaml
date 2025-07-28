@@ -6,9 +6,6 @@ spring:
       host: mongodb # Refers to the docker-compose service of the same name
       port: 27017
       database: prices
-    redis:
-      host: redis # Refers to the docker-compose service of the same name
-      port: 6379
 
 ge-prices:
   scheme: https

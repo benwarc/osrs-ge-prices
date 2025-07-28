@@ -9,8 +9,6 @@ services:
     depends_on:
       mongodb:
         condition: service_started
-      redis:
-        condition: service_started
   mongodb:
     image: "mongodb/mongodb-community-server:7.0.12-ubuntu2204"
     ports:
@@ -18,13 +16,6 @@ services:
     networks:
       - local
     container_name: mongodb
-  redis:
-    image: "redis:alpine"
-    ports:
-      - "6379:6379"
-    networks:
-      - local
-    container_name: redis
 
 networks:
   local:
