@@ -1,5 +1,6 @@
 package com.github.benwarc.osrsgepricesbatch;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -31,6 +32,8 @@ public class BaseSpringBatchTest {
 
     @Autowired
     protected JobLauncherTestUtils jobLauncherTestUtils;
+    @Autowired
+    protected ObjectMapper objectMapper;
 
     @BeforeAll
     static void beforeAll() throws IOException {
