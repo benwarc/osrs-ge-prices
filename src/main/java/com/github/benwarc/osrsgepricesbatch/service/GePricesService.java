@@ -46,7 +46,7 @@ public class GePricesService {
         int timestamp = fiveMinutePrices.get(TIMESTAMP).asInt();
 
         var prices = new ArrayList<Price>();
-        itemIdAndPriceMap.fields().forEachRemaining(mapEntry -> {
+        itemIdAndPriceMap.properties().iterator().forEachRemaining(mapEntry -> {
             var price = new Price(
                     Integer.parseInt(mapEntry.getKey()),
                     mapEntry.getValue().get(AVG_HIGH_PRICE).asInt(),

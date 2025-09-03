@@ -5,7 +5,7 @@ spring:
     mongodb:
       host: mongodb # Refers to the docker-compose service of the same name
       port: 27017
-      database: prices
+      database: osrs-ge
 
 ge-prices:
   scheme: https
