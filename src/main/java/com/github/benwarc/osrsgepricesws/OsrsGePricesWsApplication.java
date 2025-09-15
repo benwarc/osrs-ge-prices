@@ -1,0 +1,13 @@
+package com.github.benwarc.osrsgepricesws;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class OsrsGePricesWsApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(OsrsGePricesWsApplication.class, args);
+	}
+
+}
