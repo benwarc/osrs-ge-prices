@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benwarc.osrsgepricesbatch.client.GePricesClient;
-import com.github.benwarc.osrsgepricesbatch.dto.Item;
-import com.github.benwarc.osrsgepricesbatch.dto.Price;
+import com.github.benwarc.osrsgepricesbeans.dto.ItemDto;
+import com.github.benwarc.osrsgepricesbeans.dto.PriceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,11 +28,11 @@ public class GePricesService {
     private static final String LOW_PRICE_VOLUME = "lowPriceVolume";
     private static final String TIMESTAMP = "timestamp";
 
-    public List<Item> getItemMapping() {
+    public List<ItemDto> getItemMapping() {
         return gePricesClient.getItemMapping().orElse(Collections.emptyList());
     }
 
-    public List<Price> getFiveMinutePrices() {
+    public List<PriceDto> getFiveMinutePrices() {
         String jsonClientResponse = gePricesClient.getFiveMinutePrices().orElse(null);
 
         JsonNode fiveMinutePrices;
@@ -45,9 +45,9 @@ public class GePricesService {
         JsonNode itemIdAndPriceMap = fiveMinutePrices.get(DATA);
         int timestamp = fiveMinutePrices.get(TIMESTAMP).asInt();
 
-        var prices = new ArrayList<Price>();
+        var prices = new ArrayList<PriceDto>();
         itemIdAndPriceMap.properties().iterator().forEachRemaining(mapEntry -> {
-            var price = new Price(
+            var price = new PriceDto(
                     Integer.parseInt(mapEntry.getKey()),
                     mapEntry.getValue().get(AVG_HIGH_PRICE).asInt(),
                     mapEntry.getValue().get(HIGH_PRICE_VOLUME).asInt(),

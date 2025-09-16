@@ -1,7 +1,7 @@
 package com.github.benwarc.osrsgepricesbatch.client;
 
-import com.github.benwarc.osrsgepricesbatch.dto.Item;
 import com.github.benwarc.osrsgepricesbatch.properties.GePricesProperties;
+import com.github.benwarc.osrsgepricesbeans.dto.ItemDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -19,7 +19,7 @@ public class GePricesClient {
     private final WebClient gePricesWebClient;
     private final GePricesProperties gePricesProperties;
 
-    public Optional<List<Item>> getItemMapping() {
+    public Optional<List<ItemDto>> getItemMapping() {
         try {
             return Optional.ofNullable(gePricesWebClient
                     .get()
@@ -30,7 +30,7 @@ public class GePricesClient {
                             .build()
                     )
                     .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<List<Item>>() {
+                    .bodyToMono(new ParameterizedTypeReference<List<ItemDto>>() {
                     })
                     .block());
         } catch (Exception e) {

@@ -1,9 +1,9 @@
 package com.github.benwarc.osrsgepricesbatch.configuration;
 
-import com.github.benwarc.osrsgepricesbatch.dto.Item;
-import com.github.benwarc.osrsgepricesbatch.dto.Price;
-import com.github.benwarc.osrsgepricesbatch.model.ItemModel;
-import com.github.benwarc.osrsgepricesbatch.model.PriceModel;
+import com.github.benwarc.osrsgepricesbeans.document.ItemDocument;
+import com.github.benwarc.osrsgepricesbeans.document.PriceDocument;
+import com.github.benwarc.osrsgepricesbeans.dto.ItemDto;
+import com.github.benwarc.osrsgepricesbeans.dto.PriceDto;
 import org.springframework.batch.core.ItemProcessListener;
 import org.springframework.batch.core.ItemReadListener;
 import org.springframework.batch.core.ItemWriteListener;
@@ -23,15 +23,15 @@ public class StepConfiguration {
     @Bean
     public Step readAndWriteItemsStep(JobRepository jobRepository,
                                       DataSourceTransactionManager transactionManager,
-                                      ItemReader<Item> itemReader,
-                                      ItemProcessor<Item, ItemModel> itemProcessor,
-                                      ItemWriter<ItemModel> itemWriter,
-                                      ItemReadListener<Item> osrsItemReadListener,
-                                      ItemProcessListener<Item, ItemModel> osrsItemProcessListener,
-                                      ItemWriteListener<ItemModel> osrsItemWriteListener) {
+                                      ItemReader<ItemDto> itemReader,
+                                      ItemProcessor<ItemDto, ItemDocument> itemProcessor,
+                                      ItemWriter<ItemDocument> itemWriter,
+                                      ItemReadListener<ItemDto> osrsItemReadListener,
+                                      ItemProcessListener<ItemDto, ItemDocument> osrsItemProcessListener,
+                                      ItemWriteListener<ItemDocument> osrsItemWriteListener) {
 
         return new StepBuilder("readAndWriteItemsStep", jobRepository)
-                .<Item, ItemModel> chunk(200, transactionManager)
+                .<ItemDto, ItemDocument> chunk(200, transactionManager)
                 .reader(itemReader)
                 .processor(itemProcessor)
                 .writer(itemWriter)
@@ -44,13 +44,13 @@ public class StepConfiguration {
     @Bean
     public Step readAndWritePricesStep(JobRepository jobRepository,
                                        DataSourceTransactionManager transactionManager,
-                                       ItemReader<Price> priceReader,
-                                       ItemWriter<PriceModel> priceWriter,
-                                       ItemReadListener<Price> priceReadListener,
-                                       ItemWriteListener<PriceModel> priceWriteListener) {
+                                       ItemReader<PriceDto> priceReader,
+                                       ItemWriter<PriceDocument> priceWriter,
+                                       ItemReadListener<PriceDto> priceReadListener,
+                                       ItemWriteListener<PriceDocument> priceWriteListener) {
 
         return new StepBuilder("readAndWritePricesStep", jobRepository)
-                .<Price, PriceModel> chunk(200, transactionManager)
+                .<PriceDto, PriceDocument> chunk(200, transactionManager)
                 .reader(priceReader)
                 .writer(priceWriter)
                 .listener(priceReadListener)

@@ -21,9 +21,15 @@
 
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<mockwebserver.version>4.12.0</mockwebserver.version>
+		<osrs.ge.prices.beans.version>1.0.0</osrs.ge.prices.beans.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.github.benwarc</groupId>
+			<artifactId>osrs-ge-prices-beans</artifactId>
+			<version>${osrs.ge.prices.beans.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>

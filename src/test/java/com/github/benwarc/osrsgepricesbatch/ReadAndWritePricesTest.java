@@ -1,7 +1,7 @@
 package com.github.benwarc.osrsgepricesbatch;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.github.benwarc.osrsgepricesbatch.model.PriceModel;
+import com.github.benwarc.osrsgepricesbeans.document.PriceDocument;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,12 +29,12 @@ class ReadAndWritePricesTest extends BaseSpringBatchTest {
 
     @Test
     void readAndWritePricesTest() throws Exception {
-        List<PriceModel> expectedPrices = objectMapper.readValue(new File("src/test/resources/expected/mongo-prices.json"), new TypeReference<>() {});
-        List<Integer> itemIds = expectedPrices.stream().map(PriceModel::getItemId).toList();
+        List<PriceDocument> expectedPrices = objectMapper.readValue(new File("src/test/resources/expected/mongo-prices.json"), new TypeReference<>() {});
+        List<Integer> itemIds = expectedPrices.stream().map(PriceDocument::getItemId).toList();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
-        List<PriceModel> actualPrices = mongoTemplate.find(Query.query(Criteria.where("itemId").in(itemIds)), PriceModel.class);
+        List<PriceDocument> actualPrices = mongoTemplate.find(Query.query(Criteria.where("itemId").in(itemIds)), PriceDocument.class);
         Assertions.assertThat(jobExecution.getExitStatus().getExitCode()).isEqualTo("COMPLETED");
         Assertions.assertThat(actualPrices).usingRecursiveComparison().ignoringFields("id").isEqualTo(expectedPrices);
     }

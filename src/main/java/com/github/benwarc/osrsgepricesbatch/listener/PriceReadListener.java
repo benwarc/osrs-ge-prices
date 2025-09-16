@@ -1,13 +1,13 @@
 package com.github.benwarc.osrsgepricesbatch.listener;
 
-import com.github.benwarc.osrsgepricesbatch.dto.Price;
+import com.github.benwarc.osrsgepricesbeans.dto.PriceDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ItemReadListener;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class PriceReadListener implements ItemReadListener<Price> {
+public class PriceReadListener implements ItemReadListener<PriceDto> {
 
     @Override
     public void beforeRead() {
@@ -15,7 +15,7 @@ public class PriceReadListener implements ItemReadListener<Price> {
     }
 
     @Override
-    public void afterRead(Price price) {
+    public void afterRead(PriceDto price) {
         log.debug("Successfully read {}", price);
     }
 

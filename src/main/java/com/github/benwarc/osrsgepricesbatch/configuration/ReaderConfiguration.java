@@ -2,9 +2,9 @@ package com.github.benwarc.osrsgepricesbatch.configuration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.benwarc.osrsgepricesbatch.dto.Item;
-import com.github.benwarc.osrsgepricesbatch.dto.Price;
 import com.github.benwarc.osrsgepricesbatch.service.GePricesService;
+import com.github.benwarc.osrsgepricesbeans.dto.ItemDto;
+import com.github.benwarc.osrsgepricesbeans.dto.PriceDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.json.JacksonJsonObjectReader;
@@ -25,9 +25,9 @@ public class ReaderConfiguration {
     private final ObjectMapper objectMapper;
 
     @Bean
-    public JsonItemReader<Item> itemReader() {
-        return new JsonItemReaderBuilder<Item>()
-                .jsonObjectReader(new JacksonJsonObjectReader<>(Item.class))
+    public JsonItemReader<ItemDto> itemReader() {
+        return new JsonItemReaderBuilder<ItemDto>()
+                .jsonObjectReader(new JacksonJsonObjectReader<>(ItemDto.class))
                 .resource(new ByteArrayResource(
                         this.serializeObjectListIntoByteArray(
                                 gePricesService.getItemMapping())))
@@ -36,9 +36,9 @@ public class ReaderConfiguration {
     }
 
     @Bean
-    public JsonItemReader<Price> priceReader() {
-        return new JsonItemReaderBuilder<Price>()
-                .jsonObjectReader(new JacksonJsonObjectReader<>(Price.class))
+    public JsonItemReader<PriceDto> priceReader() {
+        return new JsonItemReaderBuilder<PriceDto>()
+                .jsonObjectReader(new JacksonJsonObjectReader<>(PriceDto.class))
                 .resource(new ByteArrayResource(
                         this.serializeObjectListIntoByteArray(
                                 gePricesService.getFiveMinutePrices())))

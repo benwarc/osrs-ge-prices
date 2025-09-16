@@ -1,7 +1,7 @@
 package com.github.benwarc.osrsgepricesbatch;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.github.benwarc.osrsgepricesbatch.model.ItemModel;
+import com.github.benwarc.osrsgepricesbeans.document.ItemDocument;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,12 +29,12 @@ class ReadAndWriteItemsTest extends BaseSpringBatchTest {
 
     @Test
     void readAndWriteItemsTest() throws Exception {
-        List<ItemModel> expectedItems = objectMapper.readValue(new File("src/test/resources/expected/mongo-items.json"), new TypeReference<>() {});
-        List<Integer> itemIds = expectedItems.stream().map(ItemModel::getItemId).toList();
+        List<ItemDocument> expectedItems = objectMapper.readValue(new File("src/test/resources/expected/mongo-items.json"), new TypeReference<>() {});
+        List<Integer> itemIds = expectedItems.stream().map(ItemDocument::getItemId).toList();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob();
 
-        List<ItemModel> actualItems = mongoTemplate.find(Query.query(Criteria.where("itemId").in(itemIds)), ItemModel.class);
+        List<ItemDocument> actualItems = mongoTemplate.find(Query.query(Criteria.where("itemId").in(itemIds)), ItemDocument.class);
         Assertions.assertThat(jobExecution.getExitStatus().getExitCode()).isEqualTo("COMPLETED");
         Assertions.assertThat(actualItems).usingRecursiveComparison().ignoringFields("id").isEqualTo(expectedItems);
     }
