@@ -1,0 +1,38 @@
+[
+  {
+    "itemId": 11507,
+    "name": "Antifire mix(1)",
+    "value": 132,
+    "limit": 2000,
+    "lowalch": 52,
+    "highalch": 79,
+    "members": true
+  },
+  {
+    "itemId": 7331,
+    "name": "Blue firelighter",
+    "value": 15,
+    "limit": 250,
+    "lowalch": 6,
+    "highalch": 9,
+    "members": true
+  },
+  {
+    "itemId": 4456,
+    "name": "Bowl of hot water",
+    "value": 10,
+    "limit": 13000,
+    "lowalch": 4,
+    "highalch": 6,
+    "members": true
+  },
+  {
+    "itemId": 1929,
+    "name": "Bucket of water",
+    "value": 6,
+    "limit": 13000,
+    "lowalch": 2,
+    "highalch": 3,
+    "members": false
+  }
+]

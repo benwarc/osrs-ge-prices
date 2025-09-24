@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OsrsGePricesWsApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OsrsGePricesWsApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
-
 }

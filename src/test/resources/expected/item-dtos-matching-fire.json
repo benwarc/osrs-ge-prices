@@ -1,0 +1,20 @@
+[
+  {
+    "id": 11507,
+    "name": "Antifire mix(1)",
+    "value": 132,
+    "limit": 2000,
+    "lowalch": 52,
+    "highalch": 79,
+    "members": true
+  },
+  {
+    "id": 7331,
+    "name": "Blue firelighter",
+    "value": 15,
+    "limit": 250,
+    "lowalch": 6,
+    "highalch": 9,
+    "members": true
+  }
+]
