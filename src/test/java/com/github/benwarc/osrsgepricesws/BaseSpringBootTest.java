@@ -1,13 +1,16 @@
 package com.github.benwarc.osrsgepricesws;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benwarc.osrsgepricesbeans.document.ItemDocument;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MongoDBContainer;
@@ -27,7 +30,7 @@ public class BaseSpringBootTest {
     @Autowired
     private MongoTemplate mongoTemplate;
     @Autowired
-    private ObjectMapper objectMapper;
+    protected ObjectMapper objectMapper;
 
     @LocalServerPort
     protected int localServerPort;
@@ -46,6 +49,11 @@ public class BaseSpringBootTest {
         initMongoDBContainer();
     }
 
+    @AfterEach
+    void afterEach() {
+        mongoTemplate.remove(new Query(), ItemDocument.class);
+    }
+
     private void initMongoDBContainer() throws IOException {
         List<ItemDocument> items = List.of(
                 objectMapper.readValue(
@@ -55,14 +63,22 @@ public class BaseSpringBootTest {
         mongoTemplate.insertAll(items);
     }
 
-    protected String readFileAsString(String filePath) {
+    protected <T> T readFileAsType(String filePath, Class<T> type) {
         try {
             byte[] fileAsBytes = Files.readAllBytes(Paths.get(filePath));
-            Object fileAsObject = objectMapper.readValue(fileAsBytes, Object.class);
-            return objectMapper.writeValueAsString(fileAsObject);
+            return objectMapper.readValue(fileAsBytes, type);
         } catch (IOException e) {
             log.error("Exception thrown while attempting to read file: {}", filePath, e);
-            return "";
+            return null;
+        }
+    }
+
+    protected String writeValueAsString(Object value) {
+        try {
+            return objectMapper.writeValueAsString(value);
+        } catch (JsonProcessingException e) {
+            log.error("Exception thrown while attempting to write value as string: {}", value, e);
+            return null;
         }
     }
 }

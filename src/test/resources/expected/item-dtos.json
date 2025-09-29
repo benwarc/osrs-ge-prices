@@ -16,5 +16,23 @@
     "lowalch": 6,
     "highalch": 9,
     "members": true
+  },
+  {
+    "id": 4456,
+    "name": "Bowl of hot water",
+    "value": 10,
+    "limit": 13000,
+    "lowalch": 4,
+    "highalch": 6,
+    "members": true
+  },
+  {
+    "id": 1929,
+    "name": "Bucket of water",
+    "value": 6,
+    "limit": 13000,
+    "lowalch": 2,
+    "highalch": 3,
+    "members": false
   }
 ]

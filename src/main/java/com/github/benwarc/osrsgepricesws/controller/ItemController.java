@@ -15,7 +15,12 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    @GetMapping("/items/{name}")
+    @GetMapping("/items/item-id/{item-id}")
+    public ItemDto getItemByItemId(@PathVariable("item-id") Long itemId) {
+        return itemService.getItemByItemId(itemId);
+    }
+
+    @GetMapping("/items/name/{name}")
     public List<ItemDto> getItemsByName(@PathVariable String name) {
         return itemService.getItemsByName(name);
     }

@@ -18,6 +18,13 @@ public class ItemService {
     private final ItemMapper itemMapper;
     private final MongoTemplate mongoTemplate;
 
+    public ItemDto getItemByItemId(Long itemId) {
+        return itemMapper.documentToDto(
+                mongoTemplate.findOne(
+                        Query.query(Criteria.where("itemId").is(itemId)),
+                        ItemDocument.class));
+    }
+
     public List<ItemDto> getItemsByName(String name) {
         return itemMapper.documentsToDtos(
                 mongoTemplate.find(
