@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.stream.Stream;
 
-class ItemControllerIntegrationTest extends BaseSpringBootTest {
+class ItemControllerIT extends BaseSpringBootTest {
 
     @Test
     void getItemByItemIdTest() {
