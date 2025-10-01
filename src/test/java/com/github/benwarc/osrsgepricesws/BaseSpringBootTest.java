@@ -3,8 +3,10 @@ package com.github.benwarc.osrsgepricesws;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benwarc.osrsgepricesbeans.document.ItemDocument;
+import com.github.benwarc.osrsgepricesbeans.document.PriceDocument;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,8 +16,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,7 +23,6 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Testcontainers
 @Slf4j
 public class BaseSpringBootTest {
 
@@ -35,13 +34,17 @@ public class BaseSpringBootTest {
     @LocalServerPort
     protected int localServerPort;
 
-    @Container
     private static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
 
     @DynamicPropertySource
     static void dynamicProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.data.mongodb.host", mongoDBContainer::getHost);
         registry.add("spring.data.mongodb.port", mongoDBContainer::getFirstMappedPort);
+    }
+
+    @BeforeAll
+    static void beforeAll() {
+        mongoDBContainer.start();
     }
 
     @BeforeEach
@@ -52,6 +55,7 @@ public class BaseSpringBootTest {
     @AfterEach
     void afterEach() {
         mongoTemplate.remove(new Query(), ItemDocument.class);
+        mongoTemplate.remove(new Query(), PriceDocument.class);
     }
 
     private void initMongoDBContainer() throws IOException {
@@ -59,8 +63,13 @@ public class BaseSpringBootTest {
                 objectMapper.readValue(
                         Files.readAllBytes(Paths.get("src/test/resources/mongo/item-documents.json")),
                         ItemDocument[].class));
+        List<PriceDocument> prices = List.of(
+                objectMapper.readValue(
+                        Files.readAllBytes(Paths.get("src/test/resources/mongo/price-documents.json")),
+                        PriceDocument[].class));
 
         mongoTemplate.insertAll(items);
+        mongoTemplate.insertAll(prices);
     }
 
     protected <T> T readFileAsType(String filePath, Class<T> type) {
