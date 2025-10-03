@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: osrs-ge-prices-ws
+  data:
+    mongodb:
+      host: # Defined in the base Spring Boot test class
+      port: # Defined in the base Spring Boot test class
+      database: osrs-ge
+
+logging:
+  level:
+    com.github.benwarc.osrsgepricesws: DEBUG
