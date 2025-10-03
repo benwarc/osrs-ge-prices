@@ -1,0 +1,18 @@
+[
+  {
+    "itemId": 2,
+    "avgHighPrice": 194,
+    "highPriceVolume": 134371,
+    "avgLowPrice": 188,
+    "lowPriceVolume": 16245,
+    "timestamp": 1730985900
+  },
+  {
+    "itemId": 30,
+    "avgHighPrice": 950,
+    "highPriceVolume": 2,
+    "avgLowPrice": null,
+    "lowPriceVolume": 0,
+    "timestamp": 1730985900
+  }
+]

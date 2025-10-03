@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: osrs-ge-prices-batch
+  batch:
+    job:
+      enabled: false
+  data:
+    mongodb:
+      host: # Defined in the base Spring Batch test class
+      port: # Defined in the base Spring Batch test class
+      database: osrs-ge
+
+ge-prices:
+  scheme: http
+  base-url: # Defined in the base Spring Batch test class
+  item-mapping-url: # Defined in the base Spring Batch test class
+  five-minute-prices-url: # Defined in the base Spring Batch test class
+
+largest-response-size-kb: 800
+
+logging:
+  level:
+    com.github.benwarc.osrsgepricesbatch: DEBUG

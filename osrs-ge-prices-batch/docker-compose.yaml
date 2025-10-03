@@ -1,0 +1,22 @@
+services:
+  batch:
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - local
+    container_name: batch
+    depends_on:
+      mongodb:
+        condition: service_started
+  mongodb:
+    image: "mongodb/mongodb-community-server:7.0.12-ubuntu2204"
+    ports:
+      - "27017:27017"
+    networks:
+      - local
+    container_name: mongodb
+
+networks:
+  local:
+    driver: bridge
